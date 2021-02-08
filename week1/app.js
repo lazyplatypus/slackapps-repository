@@ -6,9 +6,23 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
 
+const newchannel = "C01MAE1JMDZ";
 app.message("hello", async ({message,say}) => {
     await say(`Hola <@${message.user}>`);
 } );
+
+app.event('member_joined_channel', async ({ event, client }) => {
+    try {
+        const result = await client.chat.postMessage({
+            channel: newchannel,
+            text:`Fifi is cool, introduce yourself <@${event.user}>`,
+        });
+        console.log(result);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  });
 
 (async () => {
   // Start your app
